@@ -64,16 +64,14 @@ module ManageIQ::Providers::Nuage::ManagerMixin
         url = "#{endpoint.hostname}:#{endpoint.port}"
       end
 
-      if (authentication = amqp.try(:authentication))
-        url = "#{authentication.userid}:#{authentication.password}@" + url
-      end
+     if (authentication = amqp.try(:authentication))
+       url = "#{authentication.userid}:#{authentication.password}@#{url}"
+     end
 
       {
         :ems                       => self,
         :url                       => url,
-        :topic                     => 'topic://topic/CNAMessages',
-        :sasl_allowed_mechs        => "PLAIN",
-        :sasl_allow_insecure_mechs => true,
+        :sasl_allow_insecure_mechs => true, # Only plain (insecure) mechanism currently supported
       }
     end
   end

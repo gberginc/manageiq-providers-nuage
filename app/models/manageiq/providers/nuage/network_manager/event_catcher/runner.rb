@@ -2,6 +2,8 @@ class ManageIQ::Providers::Nuage::NetworkManager::EventCatcher::Runner < ManageI
   def event_monitor_handle
     unless @event_monitor_handle
       options = @ems.event_monitor_options
+      # Only the events topic is relevant
+      options[:topic] = 'topic://topic/CNAMessages'
       @event_monitor_handle = ManageIQ::Providers::Nuage::NetworkManager::EventCatcher::Stream.new(options)
     end
     @event_monitor_handle

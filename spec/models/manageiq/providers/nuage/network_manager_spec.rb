@@ -22,5 +22,4 @@ describe ManageIQ::Providers::Nuage::NetworkManager do
       }.to raise_error(MiqException::MiqInvalidCredentialsError)
     end
   end
-
 end
