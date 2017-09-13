@@ -1,8 +1,6 @@
 require 'qpid_proton'
 
 class ManageIQ::Providers::Nuage::NetworkManager::EventCatcher::MessagingHandler < Qpid::Proton::Handler::MessagingHandler
-  include Vmdb::Logging
-
   def initialize(options = {})
     super()
     @options = options
@@ -15,11 +13,11 @@ class ManageIQ::Providers::Nuage::NetworkManager::EventCatcher::MessagingHandler
 
   def on_start(event)
     conn = event.container.connect(@url, @options)
-    event.container.create_receiver(conn, :source => @topic)
+    event.container.create_receiver(conn, :source => @topic) unless @test_connection
   end
 
   def on_connection_opened(event)
-    # In case we are testing the connection, we can immediately stop the container
+    # In case connection test was requested, close the connection immediately.
     event.container.stop if @test_connection
   end
 
