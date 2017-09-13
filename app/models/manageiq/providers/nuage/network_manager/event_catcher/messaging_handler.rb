@@ -9,6 +9,7 @@ class ManageIQ::Providers::Nuage::NetworkManager::EventCatcher::MessagingHandler
     @topic = @options.delete(:topic)
     @test_connection = @options.delete(:test_connection)
     @message_handler_block = @options.delete(:message_handler_block)
+    @stop_listening = false
   end
 
   def on_start(event)
@@ -30,6 +31,11 @@ class ManageIQ::Providers::Nuage::NetworkManager::EventCatcher::MessagingHandler
   end
 
   def on_message(event)
+    event.container.stop if @stop_listening
     @message_handler_block.call(JSON.parse(event.message.body)) if @message_handler_block
+  end
+
+  def stop
+    @stop_listening = true
   end
 end

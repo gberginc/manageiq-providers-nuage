@@ -23,6 +23,12 @@ class ManageIQ::Providers::Nuage::NetworkManager::EventCatcher::Runner < ManageI
     stop_event_monitor
   end
 
+  def stop_event_monitor
+    @event_monitor_handle.try!(:stop)
+  ensure
+    reset_event_monitor_handle
+  end
+
   def queue_event(event)
     event_hash = ManageIQ::Providers::Nuage::NetworkManager::EventParser.event_to_hash(event, @cfg[:ems_id])
     EmsEvent.add_queue('add', @cfg[:ems_id], event_hash)

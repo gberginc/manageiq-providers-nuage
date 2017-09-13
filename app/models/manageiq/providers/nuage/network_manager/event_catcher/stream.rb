@@ -16,8 +16,6 @@ class ManageIQ::Providers::Nuage::NetworkManager::EventCatcher::Stream
   end
 
   def self.connect(connection_options = {})
-    @handler = ManageIQ::Providers::Nuage::NetworkManager::EventCatcher::MessagingHandler.new(connection_options)
-    Qpid::Proton::Reactor::Container.new(@handler)
   end
 
   def self.log_prefix
@@ -36,12 +34,16 @@ class ManageIQ::Providers::Nuage::NetworkManager::EventCatcher::Stream
   end
 
   def stop
-    # TODO
+    @handler.stop
   end
 
   private
 
   def connection
-    @connection ||= self.class.connect(@options)
+    unless @connection
+      @handler = ManageIQ::Providers::Nuage::NetworkManager::EventCatcher::MessagingHandler.new(@options)
+      @connection = Qpid::Proton::Reactor::Container.new(@handler)
+    end
+    @connection
   end
 end
