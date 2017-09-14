@@ -15,9 +15,6 @@ class ManageIQ::Providers::Nuage::NetworkManager::EventCatcher::Stream
     end
   end
 
-  def self.connect(connection_options = {})
-  end
-
   def self.log_prefix
     "MIQ(#{self.class.name})"
   end

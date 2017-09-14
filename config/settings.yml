@@ -10,8 +10,3 @@
     :password:
     :port:
     :user:
-:workers:
-  :worker_base:
-    :event_catcher:
-      :event_catcher_nuage_network:
-        :poll: 1.seconds
